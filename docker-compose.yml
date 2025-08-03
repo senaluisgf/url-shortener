@@ -20,6 +20,7 @@ services:
   api:
     build:
       context: .
+    restart: always
     ports:
       - ${BACKEND_PORT}:${BACKEND_PORT}
     env_file:
