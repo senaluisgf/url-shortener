@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: ${DATABASE_HOST}
+    restart: always
+    env_file:
+      - ./.env.postgres
+    ports:
+      - ${DATABASE_PORT}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - url-shortener-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  api:
+    build:
+      context: .
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    env_file:
+      - ./.env.backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - url-shortener-network
+
+volumes:
+  pgdata:
+
+networks:
+  url-shortener-network:
+    driver: bridge
