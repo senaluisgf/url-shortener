@@ -31,7 +31,7 @@ export default tseslint.config(
       'README.md',
       '*.md',
       '.DS_Store',
-      'Thumbs.db'
+      'Thumbs.db',
     ],
   },
   eslint.configs.recommended,
