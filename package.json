@@ -14,9 +14,10 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint '{src,test}/**/*.ts' --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test": "jest --passWithNoTests --no-cache -runInBand",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:watch": "npm test -- --watch",
+    "test:cov": "npm test -- --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
@@ -63,7 +64,8 @@
   "lint-staged": {
     "*.{ts,js,json}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "npm run test:staged"
     ]
   },
   "jest": {
