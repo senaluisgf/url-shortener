@@ -7,14 +7,21 @@ async function bootstrap() {
 
   // add swagger
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('cats')
+    .setTitle('URL Shortener')
+    .setDescription('Simple API to shorten URLs')
+    .setVersion('1.0.0')
+    .addTag('URL')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
-  app.enableCors();
-  await app.listen(process.env.BACKEND_PORT ?? 3000);
+  SwaggerModule.setup('doc', app, documentFactory);
+
+  // allow api access
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: false,
+  });
+
+  await app.listen(process.env.PORT ?? process.env.BACKEND_PORT ?? 3000);
 }
 bootstrap();
