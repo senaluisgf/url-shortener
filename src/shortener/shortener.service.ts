@@ -8,7 +8,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ShortenerService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   private generateSlug(): string {
     return randomBytes(4).toString('base64url').substring(0, 6);
@@ -53,7 +53,7 @@ export class ShortenerService {
 
     await this.prisma.url.update({
       where: { id: url.id },
-      data: { clicks: { increment: 1 } }
+      data: { clicks: { increment: 1 } },
     });
 
     return url.original;
