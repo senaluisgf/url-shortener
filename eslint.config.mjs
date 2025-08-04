@@ -60,7 +60,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
-      '@typescript-eslint/no-redundant-type-constituents': 'off'
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
     },
   },
 );
