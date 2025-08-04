@@ -8,9 +8,8 @@ async function bootstrap() {
   // add swagger
   const config = new DocumentBuilder()
     .setTitle('URL Shortener')
-    .setDescription('Simple API to shorten URLs')
-    .setVersion('1.0.0')
-    .addTag('URL')
+    .setDescription('Simple API to shorten URLs with Authentication')
+    .setVersion('2.0.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, documentFactory);
