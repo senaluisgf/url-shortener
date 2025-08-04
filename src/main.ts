@@ -10,9 +10,11 @@ async function bootstrap() {
     .setTitle('URL Shortener')
     .setDescription('Simple API to shorten URLs with Authentication')
     .setVersion('2.0.0')
+    // add authentication on swagger
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('doc', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory);
 
   // allow api access
   app.enableCors({

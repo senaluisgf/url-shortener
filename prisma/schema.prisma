@@ -14,13 +14,15 @@ datasource db {
 }
 
 model Url {
-  id         String   @id @default(uuid())
-  slug       String   @unique
-  original   String
-  clicks     Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  deletedAt  DateTime?
+  id        String    @id @default(uuid())
+  slug      String    @unique
+  original  String
+  clicks    Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  userId    String? // Relacionamento opcional
+  user      User?     @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -29,4 +31,5 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Url       Url[]
 }

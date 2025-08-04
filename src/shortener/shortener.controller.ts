@@ -1,7 +1,27 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
-import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import type { Response } from 'express';
 
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from 'src/auth/optional-jwt-auth.guard';
 import { ShortenerService } from './shortener.service';
 
 @ApiTags('URL')
@@ -31,9 +51,23 @@ export class ShortenerController {
       },
     },
   })
+  @ApiBearerAuth()
+  @UseGuards(OptionalJwtAuthGuard)
   @Post()
-  create(@Body('original') original: string) {
-    return this.service.create(original);
+  create(@Body('original') original: string, @Req() req: any) {
+    const userId = req.user?.sub;
+    return this.service.create(original, userId as string);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findAll(@Req() req: any) {
+    const userId = req.user.sub;
+    if (!userId) {
+      throw new ForbiddenException('User must have to login');
+    }
+    return this.service.listUserUrls(userId as string);
   }
 
   @ApiParam({ name: 'slug', example: 'aZbKq7' })
@@ -58,10 +92,29 @@ export class ShortenerController {
     };
   }
 
+  @ApiBearerAuth()
+  @UseGuards(OptionalJwtAuthGuard)
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body('original') newUrl: string,
+    @Req() req: any,
+  ) {
+    return this.service.updateUrl(id, newUrl, req.user.sub);
+  }
+
   // we dont map on swagger trying to avoid conflict
   @Get(':slug')
   async redirect(@Param('slug') slug: string, @Res() res: Response) {
     const originalUrl = await this.service.getBySlug(slug);
     return res.redirect(originalUrl);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(OptionalJwtAuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: string, @Req() req: any) {
+    const userId = req.user?.sub;
+    return this.service.delete(id, userId as string);
   }
 }
