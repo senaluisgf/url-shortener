@@ -1,98 +1,50 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<!-- # Programming Challenge -->
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Documentação
+- **Necessário ter NodeJs 22 ou superior**
+---
+### Inicialização da Aplicação
+#### Instalação de dependências
+##### Variáveis de ambiente
+1. Vá até a pasta raiz do projeto e renomeie o arquivo **.env.example** (**ele já está com o valor padrão de desenvolvimento para cada variável**)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+##### Banco de dados **(Container)**
+1. Clone o repositório.
+1. Utilizando um terminal ou inteface gráfica navegue até a **pasta raiz** do repositório
+1. Já na pasta raiz, para executar e subir a instância do banco de dados você precisa executar o comando ```docker compose up -d postgres```
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+##### API
+1. Usando o terminal, entre na pasta do projeto.
+1. Usando o terminal, execute o comando ```npm i```
+1. Usando o terminal, execute o comando ```npx prisma generate``` (para gerar o cliente prisma)
+1. Usando o terminal, execute o comando ```npx prisma migrate dev``` (para rodar as migrations no banco de dados)
+1. agora basta executar o comando ```npm start``` e ir até o endereço http://localhost:3333/docs (**Porta em que o Swagger está escutando**)
 
-```bash
-$ npm install
-```
 
-## Compile and run the project
 
-```bash
-# development
-$ npm run start
+#### V1.0.0
+Esta é a versão contendo apenas o **Encurtador de URL**. Nesta versão é possível apenas encurtar uma url original ou acessar uma url encurtada para ser redirecionado para o site original.
+#### V2.0.0
+Esta versão contém o encurtador e uma pequena sessão simples de login, logout e registro do usuário.
+#### V3.0.0
+Esta é a versão com mudanças mais robustas no sistema. Ela intrega a sessão do usuário com a possibilidade de encurtar, listar, editar e excluir URLs no sistema (Usuários só podem editar/excluir suas próprias URLs, assim como apenas usuários logados tem acesso a lista de URL por eles criadas).
+#### V4.0.0
+Esta versão contém os mesmos recursos que as versões anteriores. Porém, com a pequena funcionalidade extrar de contrar quantos acessos determinada URL obteve.
 
-# watch mode
-$ npm run start:dev
+#### Decisões de Projeto
+O desafio era bem amplo no leque de opções, optei por obter alguns diferenciais e ferramentas que considero importante durante o desenvolvimento de um projeto. Dentre essas ferramentas optei por inserir:
+- **Swagger**: Para um ter uma interface e interagir com mais facilidade com a applicação. Podendo realizar tester diretamente nela;
+- **Docker/Docker-compose**: Como o desafio exigia a construção de um banco relacional, optei por subir um container Docker para simplificar essa parte e poder derrubar e subir o banco sem preocupações;
+- **Jest**: Para ter mais uma camada de confiabilidade no que eu estava desenvolvendo, e garantir que ao longo do desenvolvimento eu não quebrasse algo que já estava funcionando, realizei a implementação de alguns testes unitários;
+- **Husky**: Para garantir qualidade durante a intregação do software(volterei neste tópico na seção de **Desafios Enfrentados**). Realizando checagem de escrita com **Eslint** antes de cada commit e também a execução dos testes unitários ante sde subir para o repositório remoto;
+- **GitHub Actions**: Como mais uma camada de garantia de qualidade de código, implementei também a CI do github para verificar a saúde do código;
 
-# production mode
-$ npm run start:prod
-```
+#### Desafios encontrados durante o Projeto
+- **Tempo** - Gostei muito de me dedicar e passar essas noites em claro desenvolvendo este desafio. Porém eu acabei deixando muito a desejar no gerenciamento de tempo, gastei muitas horas em detalher mínimos para tentar deixar o projeto a minha cara já de começo. Isso acarretou em pouco tempo para de fato atigir todos os tópicos que me comprometi em entregar do desafio. Isso é visível quando analisamos tanto o **Husky** quanto o **GitHub Action** do projeto (e os horários do commit). O projeto está sim finalizado e executando com maestria, porém alguns erros de tipagem que não tive tempo de corrigir até o final do horário estipulado do desafio
 
-## Run tests
+#### Considerações finais
+Fico muito grato de participar deste desafio, sinto que foi muito proveitoso o tempo que me debrucei no computador para ler, entender, montar estratégias e corrigir os error. Dito isso, muito obrigado e que tenha sido uma avaliação proveitosa para você assim como foi implemetá-la para mim 😎😉
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
