@@ -18,7 +18,7 @@
 
 1. Clone o repositório.
 1. Utilizando um terminal ou inteface gráfica navegue até a **pasta raiz** do repositório
-1. Já na pasta raiz, para executar e subir as instâncias dos banco de dados e da api você precisa executar o comando `docker
+1. Já na pasta raiz, para executar e subir as instâncias dos banco de dados e da api você precisa executar o comando `docker compose up -d`
 1. agora basta abrir o navegador e ir até o endereço http://localhost:3333/docs (**Porta em que o Swagger está escutando**)
 
 #### V1.0.0
