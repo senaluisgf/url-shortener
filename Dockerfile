@@ -1,5 +1,9 @@
+ARG NODE_VERSION=$NODE_VERSION
+ARG NODE_ENV=$NODE_ENV
+ARG PORT=$BACKEND_PORT
+
 # Build stage
-FROM node:22-alpine AS builder
+FROM node:$NODE_VERSION-alpine AS builder
 
 WORKDIR /app
 
@@ -14,24 +18,26 @@ COPY . .
 
 # Generate Prisma client
 RUN npx prisma generate
+RUN npx prisma migrate dev
 
 # Build the application
 RUN npm run build
 
 # Production stage
-FROM node:22-alpine AS production
+FROM node:$NODE_VERSION-alpine AS production
 
 WORKDIR /app
 
 # Set runtime environment variables
-ENV NODE_ENV=production
-ENV PORT=3333
+ENV NODE_ENV=$NODE_ENV
+ENV PORT=$PORT
 
 # Copy package files
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci --omit=dev
+# RUN npm ci --omit=dev
+RUN npm ci
 
 # Copy built application
 COPY --from=builder /app/dist ./dist
@@ -47,7 +53,7 @@ RUN chown -R nestjs:nodejs /app
 USER nestjs
 
 # Expose port using ARG
-EXPOSE 3333
+EXPOSE $PORT
 
 # Start the application using ENV variable
 CMD ["node", "dist/main.js"] 

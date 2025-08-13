@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:15
     container_name: ${DATABASE_HOST}
-    restart: always
+    restart: unless-stopped
     env_file:
       - ./.env.postgres
     ports:
@@ -20,7 +20,12 @@ services:
   api:
     build:
       context: .
-    restart: always
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV}
+        NODE_VERSION: ${NODE_VERSION}
+        BACKEND_PORT: ${BACKEND_PORT}
+    restart: unless-stopped
     ports:
       - ${BACKEND_PORT}:${BACKEND_PORT}
     env_file:
